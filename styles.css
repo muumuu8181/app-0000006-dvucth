@@ -1,0 +1,297 @@
+/* Meteor Storm - 超絶格好良い隕石落下 */
+
+:root {
+    --bg-dark: #0a0a0f;
+    --bg-darker: #050508;
+    --primary: #ff6b35;
+    --secondary: #f7931e;
+    --accent: #ffd23f;
+    --ice: #00d9ff;
+    --cosmic: #9d4edd;
+    --plasma: #ff006e;
+    --glow: rgba(255, 107, 53, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: var(--bg-dark);
+    color: white;
+    overflow: hidden;
+    position: relative;
+    height: 100vh;
+}
+
+/* Canvas層 */
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#meteorCanvas {
+    z-index: 2;
+}
+
+#particleCanvas {
+    z-index: 3;
+}
+
+#glowCanvas {
+    z-index: 1;
+    filter: blur(20px);
+    opacity: 0.7;
+}
+
+/* コントロールパネル */
+.control-panel {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(10, 10, 15, 0.9);
+    border: 2px solid var(--primary);
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+    z-index: 10;
+    max-width: 300px;
+    animation: panelGlow 3s ease-in-out infinite;
+}
+
+@keyframes panelGlow {
+    0%, 100% {
+        box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(255, 107, 53, 0.5);
+    }
+}
+
+.control-panel h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px var(--glow);
+}
+
+/* コントロール */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.control-group label {
+    font-size: 0.9rem;
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.control-group select,
+.control-group input[type="range"] {
+    background: var(--bg-darker);
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+}
+
+.control-group select {
+    cursor: pointer;
+}
+
+.control-group input[type="range"] {
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    background: var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--glow);
+}
+
+.control-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* ボタン */
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--bg-darker);
+    color: white;
+    border: 1px solid var(--primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+}
+
+.btn:hover::before {
+    width: 100%;
+    height: 100%;
+}
+
+.btn.primary {
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    border: none;
+    color: white;
+    grid-column: span 2;
+}
+
+.btn.epic {
+    background: linear-gradient(45deg, var(--plasma), var(--cosmic));
+    border: none;
+    grid-column: span 2;
+    animation: epicPulse 2s ease-in-out infinite;
+}
+
+@keyframes epicPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 40px rgba(157, 78, 221, 0.7);
+    }
+}
+
+/* 統計 */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.stat {
+    background: var(--bg-darker);
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--accent);
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 10px var(--glow);
+}
+
+/* 隕石エフェクト */
+.meteor-trail {
+    position: absolute;
+    width: 2px;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        var(--primary) 30%, 
+        var(--accent) 70%, 
+        transparent 100%
+    );
+    filter: blur(1px);
+    pointer-events: none;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    .control-panel {
+        left: 10px;
+        top: 10px;
+        max-width: 250px;
+        padding: 15px;
+    }
+    
+    .control-panel h1 {
+        font-size: 1.4rem;
+    }
+    
+    .buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn.primary,
+    .btn.epic {
+        grid-column: span 1;
+    }
+}
+
+/* 背景アニメーション */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(157, 78, 221, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(0, 217, 255, 0.05) 0%, transparent 70%);
+    animation: bgPulse 10s ease-in-out infinite;
+    z-index: 0;
+}
+
+@keyframes bgPulse {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}

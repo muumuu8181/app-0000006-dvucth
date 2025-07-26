@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meteor Storm - 超絶格好良い隕石落下</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="control-panel">
+        <h1>🌠 METEOR STORM</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label>隕石タイプ</label>
+                <select id="meteorType">
+                    <option value="fire">🔥 ファイアメテオ</option>
+                    <option value="ice">❄️ アイスメテオ</option>
+                    <option value="cosmic">🌌 コズミックメテオ</option>
+                    <option value="plasma">⚡ プラズマメテオ</option>
+                    <option value="rainbow">🌈 レインボーメテオ</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>隕石サイズ</label>
+                <input type="range" id="meteorSize" min="1" max="5" value="3">
+                <span id="sizeValue">3</span>
+            </div>
+            
+            <div class="control-group">
+                <label>降下速度</label>
+                <input type="range" id="meteorSpeed" min="1" max="10" value="5">
+                <span id="speedValue">5</span>
+            </div>
+            
+            <div class="control-group">
+                <label>隕石密度</label>
+                <input type="range" id="meteorDensity" min="1" max="10" value="5">
+                <span id="densityValue">5</span>
+            </div>
+            
+            <div class="control-group">
+                <label>効果音</label>
+                <input type="checkbox" id="soundEnabled" checked>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <button id="startBtn" class="btn primary">隕石嵐開始</button>
+            <button id="stopBtn" class="btn">停止</button>
+            <button id="clearBtn" class="btn">クリア</button>
+            <button id="epicModeBtn" class="btn epic">エピックモード</button>
+        </div>
+        
+        <div class="stats">
+            <div class="stat">
+                <span class="stat-label">総隕石数</span>
+                <span id="meteorCount" class="stat-value">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">破壊力</span>
+                <span id="destructionPower" class="stat-value">0</span>
+            </div>
+        </div>
+    </div>
+    
+    <canvas id="meteorCanvas"></canvas>
+    <canvas id="particleCanvas"></canvas>
+    <canvas id="glowCanvas"></canvas>
+    
+    <!-- サウンドコンテナ -->
+    <div id="soundContainer" style="display: none;"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
